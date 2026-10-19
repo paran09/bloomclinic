@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bloom — Antenatal Journey Companion</title>
+  <style>
+    :root {
+      --bg: #f4f0e8;
+      --card-bg: rgba(255, 254, 250, 0.88);
+      --text: #24332c;
+      --text-muted: #647168;
+      --primary: #345c4a;
+      --primary-dark: #244536;
+      --primary-light: #dfe9df;
+      --accent: #bd6b50;
+      --border: rgba(52, 92, 74, 0.16);
+      --display: Georgia, "Times New Roman", serif;
+      --font: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font);
+      background:
+        radial-gradient(circle at 5% 2%, rgba(189, 107, 80, .13), transparent 24rem),
+        radial-gradient(circle at 95% 18%, rgba(78, 122, 99, .14), transparent 26rem),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px;
+      min-height: 100vh;
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding-bottom: 40px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 48px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--display);
+      font-size: 1.55rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--primary);
+      border-radius: 50% 50% 44% 56%;
+      font-size: 1rem;
+    }
+
+    .tagline {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(130deg, rgba(255,254,250,.96), rgba(238,243,235,.88));
+      border: 1px solid var(--border);
+      border-radius: 30px 30px 90px 30px;
+      padding: clamp(28px, 6vw, 72px);
+      margin-bottom: 24px;
+      box-shadow: 0 24px 70px rgba(43, 66, 54, .09);
+    }
+
+    .hero h1 {
+      max-width: 680px;
+      font-family: var(--display);
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 400;
+      line-height: .98;
+      letter-spacing: -.04em;
+      color: var(--primary);
+      margin-bottom: 18px;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      max-width: 560px;
+      margin-bottom: 28px;
+      font-size: 1.06rem;
+    }
+
+    /* Calculator Card */
+    .calculator-card {
+      max-width: 760px;
+      background: rgba(223, 233, 223, .72);
+      border: 1px solid #D1DDD2;
+      border-radius: 18px;
+      padding: 22px;
+      margin-top: 20px;
+    }
+
+    .calculator-card h3 {
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .calc-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .input-group-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .input-group-row {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+
+    .input-field {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .input-field label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .input-field input {
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      background: rgba(255,255,255,.9);
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    .input-field input:focus-visible {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(52,92,74,.12);
+    }
+
+    .secondary-btn {
+      background: transparent;
+      border: 1px solid var(--primary);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    .secondary-btn:hover {
+      background: rgba(91, 112, 101, 0.1);
+    }
+
+    /* Stats Overview */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+    }
+
+    .stat-card span {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .stat-card strong {
+      font-family: var(--display);
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      color: var(--primary);
+    }
+
+    /* Sections */
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    @media(min-width: 768px) {
+      .grid-container {
+        grid-template-columns: 1.35fr .8fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 14px 40px rgba(43, 66, 54, .06);
+    }
+
+    .card h2 {
+      font-family: var(--display);
+      font-size: 1.55rem;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .card-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    /* Checklist */
+    .checklist-items {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      padding: 10px 12px;
+      border-radius: 10px;
+      transition: background .2s, opacity .2s;
+    }
+
+    .check-item:hover { background: var(--primary-light); }
+    .check-item:has(input:checked) { opacity: .62; text-decoration: line-through; }
+    .check-item { cursor: pointer; }
+
+    .check-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* Warning box */
+    .warning-card {
+      background: #f8e6df;
+      border: 1px solid #F2D3CC;
+      border-radius: 24px 24px 60px 24px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .warning-card h2 {
+      color: #A84C32;
+      margin-bottom: 8px;
+    }
+
+    .warning-card ul {
+      margin-left: 20px;
+      margin-top: 8px;
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+      color: #59291D;
+    }
+
+    .warning-card li {
+      margin-bottom: 4px;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      margin-top: 20px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 18px;
+      color: var(--accent);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .result-box { margin-top: 16px; padding: 14px; border-radius: 12px; background: var(--bg); }
+    .result-label { font-size: .8rem; color: var(--text-muted); }
+    .result-value { font-family: var(--display); font-size: 1.7rem; color: var(--primary); }
+    .result-note { font-size: .84rem; margin-top: 4px; font-weight: 600; }
+    .button-row { margin-top: 12px; }
+    .warning-copy { font-size: .9rem; color: #59291d; }
+    .warning-urgent { font-size: .85rem; color: #59291d; }
+
+    @media (max-width: 600px) {
+      body { padding: 14px; }
+      header { align-items: flex-start; margin-bottom: 24px; }
+      .tagline { max-width: 145px; text-align: right; }
+      .hero { border-radius: 24px 24px 54px 24px; }
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .hero, .stats-grid, .grid-container { animation: settle .65s both; }
+      .stats-grid { animation-delay: .08s; }
+      .grid-container { animation-delay: .16s; }
+      @keyframes settle { from { opacity: 0; transform: translateY(14px); } }
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <header>
+    <div class="logo-area">
+      <span class="logo-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"><path d="M12 21v-9m0 5c-4 0-6-2-6-5 4 0 6 2 6 5Zm0-4c0-4 2-6 6-6 0 4-2 6-6 6Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span> bloom
+    </div>
+    <div class="tagline">A calm space for your antenatal journey</div>
+  </header>
+
+  <!-- Hero Section with Calculator -->
+  <section class="hero">
+    <div>
+      <span class="eyebrow">Your pregnancy companion</span>
+      <h1>Care for you. Growing together.</h1>
+      <p>Keep your key dates, antenatal contacts and questions in one gentle, private place.</p>
+    </div>
+
+    <div class="calculator-card">
+      <h3>Pregnancy Date Calculator</h3>
+      <p class="calc-subtitle">Enter either your Last Menstrual Period (LMP) or Expected Due Date (EDD).</p>
+      
+      <div class="input-group-row">
+        <div class="input-field">
+          <label for="lmp-input">Last Menstrual Period (LMP)</label>
+          <input type="date" id="lmp-input" />
+        </div>
+        
+        <div class="input-field">
+          <label for="edd-input">Expected Due Date (EDD)</label>
+          <input type="date" id="edd-input" />
+        </div>
+      </div>
+      
+      <button id="clear-dates" class="secondary-btn">Reset Dates</button>
+    </div>
+  </section>
+
+  <!-- Dynamic Stats Row -->
+  <section class="stats-grid">
+    <div class="stat-card">
+      <span>Pregnancy week</span>
+      <strong data-stat="gestational-age" aria-live="polite">—</strong>
+    </div>
+    <div class="stat-card">
+      <span>Days to due date</span>
+      <strong data-stat="days-to-due" aria-live="polite">—</strong>
+    </div>
+    <div class="stat-card">
+      <span>Trimester</span>
+      <strong data-stat="trimester" aria-live="polite">Add a date</strong>
+    </div>
+  </section>
+
+  <div class="grid-container">
+    <div>
+      <!-- Mean Arterial Pressure (MAP) Calculator Card (Moved to Your Journey space) -->
+      <section class="card">
+        <h2>Mean Arterial Pressure (MAP)</h2>
+        <p class="card-subtitle">Assess blood pressure and pregnancy hemodynamic risk</p>
+        
+        <div class="input-group-row">
+          <div class="input-field">
+            <label for="sys-input">Systolic BP (mmHg)</label>
+            <input type="number" id="sys-input" placeholder="e.g. 120" min="50" max="250" />
+          </div>
+          
+          <div class="input-field">
+            <label for="dia-input">Diastolic BP (mmHg)</label>
+            <input type="number" id="dia-input" placeholder="e.g. 80" min="30" max="150" />
+          </div>
+        </div>
+
+        <div id="map-result-box" class="result-box" role="status" aria-live="polite" hidden>
+          <div class="result-label">Calculated MAP</div>
+          <div class="result-value" id="map-value">—</div>
+          <div class="result-note" id="map-interpretation">—</div>
+        </div>
+        
+        <div class="button-row">
+          <button id="clear-map-btn" class="secondary-btn">Reset BP</button>
+        </div>
+      </section>
+
+      <!-- Care Contacts Checklist -->
+      <section class="card">
+        <h2>Care contacts checklist</h2>
+        <p class="card-subtitle">Recommended antenatal visits checklist</p>
+        <div class="checklist-items" id="checklist-container">
+          <label class="check-item"><input type="checkbox"> Contact 1: Initial assessment & dating scan (8–12 wks)</label>
+          <label class="check-item"><input type="checkbox"> Contact 2: Routine screening & labs (16–20 wks)</label>
+          <label class="check-item"><input type="checkbox"> Contact 3: Anomaly scan review (20–24 wks)</label>
+          <label class="check-item"><input type="checkbox"> Contact 4: Growth & vitals check (26–28 wks)</label>
+          <label class="check-item"><input type="checkbox"> Contact 5: Glucose & antibody check (30–32 wks)</label>
+          <label class="check-item"><input type="checkbox"> Contact 6: Presentation check (34–36 wks)</label>
+          <label class="check-item"><input type="checkbox"> Contact 7: Birth plan review (38 wks)</label>
+          <label class="check-item"><input type="checkbox"> Contact 8: Term check & readiness (40 wks)</label>
+        </div>
+      </section>
+    </div>
+
+    <div>
+      <!-- Warning Signs -->
+      <section class="warning-card">
+        <h2>When to get help</h2>
+        <p class="warning-copy">Contact your maternity care team or seek urgent medical care if you have warning signs such as:</p>
+        <ul>
+          <li>Vaginal bleeding or severe abdominal pain</li>
+          <li>Severe headache, blurred vision, or sudden swelling</li>
+          <li>High fever, difficulty breathing, or feeling seriously unwell</li>
+          <li>Your baby’s movements slow or change once you usually feel them</li>
+        </ul>
+        <p class="warning-urgent"><b>If symptoms feel severe or life-threatening, seek emergency care now.</b> Do not wait.</p>
+      </section>
+    </div>
+  </div>
+
+  <footer>
+    <p>Bloom is an educational planning tool, not a medical device or substitute for professional care. Your clinician’s guidance takes priority. Saved locally on this device.</p>
+  </footer>
+</main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const lmpInput = document.getElementById('lmp-input');
+    const eddInput = document.getElementById('edd-input');
+    const clearBtn = document.getElementById('clear-dates');
+
+    // Load saved dates from localStorage if available
+    const savedLmp = localStorage.getItem('bloom_lmp');
+    const savedEdd = localStorage.getItem('bloom_edd');
+
+    if (savedLmp) lmpInput.value = savedLmp;
+    if (savedEdd) eddInput.value = savedEdd;
+    
+    if (savedLmp || savedEdd) {
+      updateCalculations();
+    }
+
+    // Event Listeners for Date Inputs
+    lmpInput.addEventListener('change', () => {
+      if (lmpInput.value) {
+        const lmpDate = parseDate(lmpInput.value);
+        lmpDate.setDate(lmpDate.getDate() + 280);
+        eddInput.value = formatDate(lmpDate);
+        saveAndCalculate();
+      }
+    });
+
+    eddInput.addEventListener('change', () => {
+      if (eddInput.value) {
+        const eddDate = parseDate(eddInput.value);
+        eddDate.setDate(eddDate.getDate() - 280);
+        lmpInput.value = formatDate(eddDate);
+        saveAndCalculate();
+      }
+    });
+
+    clearBtn.addEventListener('click', () => {
+      lmpInput.value = '';
+      eddInput.value = '';
+      localStorage.removeItem('bloom_lmp');
+      localStorage.removeItem('bloom_edd');
+      resetDisplay();
+    });
+
+    function saveAndCalculate() {
+      localStorage.setItem('bloom_lmp', lmpInput.value);
+      localStorage.setItem('bloom_edd', eddInput.value);
+      updateCalculations();
+    }
+
+    function parseDate(value) {
+      const [year, month, day] = value.split('-').map(Number);
+      return new Date(year, month - 1, day);
+    }
+
+    function formatDate(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function updateCalculations() {
+      if (!lmpInput.value) return;
+      const lmpDate = parseDate(lmpInput.value);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const diffTime = today - lmpDate;
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+      if (diffDays < 0) {
+        document.querySelector('[data-stat="gestational-age"]').textContent = `0w 0d`;
+        document.querySelector('[data-stat="days-to-due"]').textContent = '—';
+        document.querySelector('[data-stat="trimester"]').textContent = `Date is in future`;
+        return;
+      }
+
+      const weeks = Math.floor(diffDays / 7);
+      const days = diffDays % 7;
+
+      let trimester = 'First trimester';
+      if (weeks >= 14 && weeks < 28) {
+        trimester = 'Second trimester';
+      } else if (weeks >= 28) {
+        trimester = 'Third trimester';
+      }
+
+      const eddDate = parseDate(eddInput.value);
+      const daysToDueTime = eddDate - today;
+      const daysToDue = Math.ceil(daysToDueTime / (1000 * 60 * 60 * 24));
+
+      document.querySelector('[data-stat="gestational-age"]').textContent = `${weeks}w ${days}d`;
+      document.querySelector('[data-stat="days-to-due"]').textContent = daysToDue >= 0 ? `${daysToDue} days` : `Due date passed`;
+      document.querySelector('[data-stat="trimester"]').textContent = trimester;
+    }
+
+    function resetDisplay() {
+      document.querySelector('[data-stat="gestational-age"]').textContent = '—';
+      document.querySelector('[data-stat="days-to-due"]').textContent = '—';
+      document.querySelector('[data-stat="trimester"]').textContent = 'Add a date';
+    }
+
+    // Mean Arterial Pressure (MAP) Live Calculator Logic
+    const sysInput = document.getElementById('sys-input');
+    const diaInput = document.getElementById('dia-input');
+    const clearMapBtn = document.getElementById('clear-map-btn');
+    const mapResultBox = document.getElementById('map-result-box');
+    const mapValueEl = document.getElementById('map-value');
+    const mapInterpEl = document.getElementById('map-interpretation');
+
+    const savedSys = localStorage.getItem('bloom_sys');
+    const savedDia = localStorage.getItem('bloom_dia');
+    if (savedSys) sysInput.value = savedSys;
+    if (savedDia) diaInput.value = savedDia;
+    if (savedSys && savedDia) calculateMAP();
+
+    sysInput.addEventListener('input', calculateMAP);
+    diaInput.addEventListener('input', calculateMAP);
+
+    clearMapBtn.addEventListener('click', () => {
+      sysInput.value = '';
+      diaInput.value = '';
+      localStorage.removeItem('bloom_sys');
+      localStorage.removeItem('bloom_dia');
+      mapResultBox.hidden = true;
+    });
+
+    function calculateMAP() {
+      const sys = parseFloat(sysInput.value);
+      const dia = parseFloat(diaInput.value);
+
+      if (isNaN(sys) || isNaN(dia) || sys <= 0 || dia <= 0) {
+        mapResultBox.hidden = true;
+        return;
+      }
+
+      if (sys < 50 || sys > 250 || dia < 30 || dia > 150 || sys <= dia) {
+        mapValueEl.textContent = `Check values`;
+        mapInterpEl.textContent = sys <= dia ? `Systolic must be higher than diastolic.` : `Enter values within the ranges shown.`;
+        mapInterpEl.style.color = "#A84C32";
+        mapResultBox.style.background = "#FDF3F0";
+        mapResultBox.hidden = false;
+        return;
+      }
+
+      const map = (sys + (2 * dia)) / 3;
+      const roundedMap = Math.round(map * 10) / 10;
+
+      localStorage.setItem('bloom_sys', sys);
+      localStorage.setItem('bloom_dia', dia);
+
+      let interpretation = "";
+      let colorStyle = "";
+      let bgStyle = "";
+
+      if (roundedMap < 70) {
+        interpretation = "Lower than average range (Monitor for dizziness or hypotension)";
+        colorStyle = "#8A6D3B";
+        bgStyle = "#FCF8E3";
+      } else if (roundedMap >= 70 && roundedMap < 90) {
+        interpretation = "Normal adult Mean Arterial Pressure range";
+        colorStyle = "#3C763D";
+        bgStyle = "#DFF0D8";
+      } else if (roundedMap >= 90 && roundedMap < 105) {
+        interpretation = "Elevated MAP — Discuss with your care provider, especially if in early/mid pregnancy.";
+        colorStyle = "#8A6D3B";
+        bgStyle = "#FCF8E3";
+      } else {
+        interpretation = "High MAP (≥ 105 mmHg) — Prompt clinical evaluation recommended.";
+        colorStyle = "#A84C32";
+        bgStyle = "#FDF3F0";
+      }
+
+      mapValueEl.textContent = `${roundedMap} mmHg`;
+      mapInterpEl.textContent = interpretation;
+      mapInterpEl.style.color = colorStyle;
+      mapResultBox.style.background = bgStyle;
+      mapResultBox.hidden = false;
+    }
+
+    // Keep care-contact progress private and available on this device.
+    const checklistItems = [...document.querySelectorAll('#checklist-container input')];
+    const savedChecklist = JSON.parse(localStorage.getItem('bloom_checklist') || '[]');
+    checklistItems.forEach((item, index) => {
+      item.checked = Boolean(savedChecklist[index]);
+      item.addEventListener('change', () => {
+        localStorage.setItem('bloom_checklist', JSON.stringify(checklistItems.map(input => input.checked)));
+      });
+    });
+  });
+</script>
+</body>
+</html>
+
+
+
